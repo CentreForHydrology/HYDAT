@@ -1,0 +1,16 @@
+{
+    "contents" : "Package: HYDAT\nType: Package\nTitle: An interface to Canadian Hydrometric Data\nVersion: 1.0\nDate: 2016-02-01\nAuthor: David Hutchinson\nMaintainer: David Hutchinson <david.hutchinson@ec.gc.ca>\nDescription: Access to Canadian water level, flow, and sediment data stored\n  within the HYDAT database.\nLicense: GPL-3\nImports:\n  reshape2, lubridate\nSuggests:\n  RSQLite",
+    "created" : 1431726439537.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3492686408",
+    "id" : "C87DC206",
+    "lastKnownWriteTime" : 1453525715,
+    "path" : "~/R_LIBRARY/HYDAT/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "dcf"
+}

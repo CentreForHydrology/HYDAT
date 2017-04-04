@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "\n\n#' ReportedWaterLevelPrecision\n#' @description Returns stated precision of water level (cm or mm) for each year of\n#'  published record for a given hydrometric station.\n#' @param con an open SQLite database connection\n#' @param stationID A vector of Water Survey of Canada station identifiers\n#' @return A data frame\n#' @importFrom DBI dbGetQuery\n#' @export\nReportedWaterLevelPrecision <- function(con, stationID) {\n  sqlString <- c(\"SELECT STATION_NUMBER, YEAR, PRECISION_EN FROM\",\n                 \"(DLY_LEVELS LEFT JOIN PRECISION_CODES ON\",\n                 \"DLY_LEVELS.PRECISION_CODE=PRECISION_CODES.PRECISION_CODE)\",\n                 \"WHERE STATION_NUMBER in (%s)\",\n                 \"GROUP BY STATION_NUMBER, YEAR, PRECISION_EN\")\n  sqlString <- paste(sqlString, collapse=\" \")\n  sqlString <- sprintf(sqlString, paste(sprintf(\"\\'%s\\'\", stationID), collapse=\",\"))\n  \n  # execute query\n  precision <- dbGetQuery(con, sqlString)\n  \n  return(precision)\n}\n\n#' DataSymbols\n#' @description Gets the description of data symbols applied to publication of daily hydrometric\n#'  (flow,level) and suspended sediment concentrations\n#' @param con An open SQLite database connection\n#' @return A data frame  (SYMBOL_ID, DESCRIPTION)\n#' @importFrom DBI dbGetQuery\n#' @export\nDataSymbols <- function(con) {\n  sqlString <- \"SELECT SYMBOL_ID, SYMBOL_EN as DESCRIPTION FROM DATA_SYMBOLS\"\n  symb <- dbGetQuery(con, sqlString)\n  return(symb)\n}\n\n#' PrecisionCodes\n#' @description Gets the description of precision codes of water levels.\n#' @param con An open SQLite database connection\n#' @return A data frame (PRECISION_CODE, DESCRIPTION)\n#' @importFrom DBI dbGetQuery\n#' @export\nPrecisionCodes <- function(con) {\n\tsqlString <- \"SELECT PRECISION_CODE, PRECISION_EN as DESCRIPTION FROM PRECISION_CODES\"\n\tprec <- dbGetQuery(con, sqlString)\n\treturn(prec)\n}\n\n",
+    "created" : 1460094417586.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1881887106",
+    "id" : "C54ACA65",
+    "lastKnownWriteTime" : 1460096833,
+    "last_content_update" : 1460096833183,
+    "path" : "~/Documents/PACKAGES/HYDAT/R/Miscellaneous.r",
+    "project_path" : "R/Miscellaneous.r",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

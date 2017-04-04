@@ -1,0 +1,16 @@
+{
+    "contents" : "\n#' WaterLevelPrecision\n#' @description Returns stated precision of water level (cm or mm) for each year of\n#'  published record for a given hydrometric station.\n#' @param con an open SQLite database connection\n#' @param stationID A vector of Water Survey of Canada station identifiers\n#' @return A data frame\n#' @export\nWaterLevelPrecision <- function(con, stationID) {\n  sqlString <- c(\"SELECT STATION_NUMBER, YEAR, PRECISION_EN FROM\",\n                 \"(DLY_LEVELS LEFT JOIN PRECISION_CODES ON\",\n                 \"DLY_LEVELS.PRECISION_CODE=PRECISION_CODES.PRECISION_CODE)\",\n                 \"WHERE STATION_NUMBER in (%s)\",\n                 \"GROUP BY STATION_NUMBER, YEAR, PRECISION_EN\")\n  sqlString <- paste(sqlString, collapse=\" \")\n  sqlString <- sprintf(sqlString, paste(sprintf(\"\\'%s\\'\", stationID), collapse=\",\"))\n  \n  # execute query\n  precision <- dbGetQuery(con, sqlString)\n  \n  return(precision)\n}\n\n#' DataSymbols\n#' @description Gets the description of data symbols applied to publication of daily hydrometric\n#'  (flow,level) and suspended sediment concentrations\n#'  @param con an open SQLite database connection\n#'  @return A data frame \n#'  @export\nDataSymbols <- function(con) {\n  sqlString <- \"SELECT * FROM DATA_SYMBOLS\"\n  return(dbGetQuery(con, sqlString))\n}",
+    "created" : 1446580416114.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3852716822",
+    "id" : "2CABF961",
+    "lastKnownWriteTime" : 1446580580,
+    "path" : "~/R_LIBRARY/HYDAT/R/Miscellaneous.r",
+    "project_path" : "R/Miscellaneous.r",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

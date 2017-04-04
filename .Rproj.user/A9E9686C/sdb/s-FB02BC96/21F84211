@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "\n#' @title Get mean annual hydrometric data for selected station(s)  \n#' @description  Gets the mean annual hydrometric series (flow or level) for \n#'    one or more stations. Flow units in m3/s; water level units in metres.\n#' @param con An open SQLite database connection to the HYDAT database\n#' @param get_flow Logical. If TRUE the function returns mean annual discharge,\n#'    otherwise the function returns mean annual water level\n#' @param station_number A vector of Water Survey of Canada station identifiers\n#' @return A data frame (station_number, year, mean)\n#' @seealso \\code{\\link{MonthlyHydrometricData}}\n#' @seealso \\code{\\link{DailyHydrometricData}}\n#' @importFrom DBI dbGetQuery\n#' @export\nAnnualHydrometricData <- function(con, get_flow=TRUE, station_number) {\n  type = ifelse(get_flow, \"Q\", \"H\")\n  sqlString <- c(\"SELECT STATION_NUMBER, YEAR, MEAN \",\n                 \"FROM ANNUAL_STATISTICS WHERE DATA_TYPE=\\'%s\\' AND \",\n                 \"STATION_NUMBER in (%s)\")\n  sqlString[2] <- sprintf(sqlString[2], type)\n  sqlString[3] <- sprintf(sqlString[3], \n\t\t\t\t\t\t  paste(\n\t\t\t\t\t\t\tsprintf(\"\\'%s\\'\", station_number), \n\t\t\t\t\t\t\tcollapse=\",\"))\n  sqlString <- paste(sqlString, collapse=\"\")\n  \n  data <- dbGetQuery(con, sqlString)\n  colnames(data) <- tolower(colnames(data))\n  \n  return(data)\n}\n",
+    "created" : 1484537540971.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3088586168",
+    "id" : "21F84211",
+    "lastKnownWriteTime" : 1484538610,
+    "last_content_update" : 1484538610369,
+    "path" : "~/Documents/PACKAGES/HYDAT/R/Annual_Data.r",
+    "project_path" : "R/Annual_Data.r",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

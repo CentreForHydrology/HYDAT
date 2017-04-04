@@ -1,0 +1,17 @@
+{
+    "contents" : "\n#' GetHYDAT\n#' @description Gets latest version of HYDAT database from Environment Canada's FTP data repository\n#' @importFrom RCurl getURL\n#' @param url URL of FTP data repository (\"ftp://arccf10.tor.ec.gc.ca/wsc/software/HYDAT/\")\n#' @param loc Location to unzip the package\n#' @export\nGetHYDAT <- function(url = \"ftp://arccf10.tor.ec.gc.ca/wsc/software/HYDAT/\", loc) {\n  files <- getURL(url, ftp.use.epsv=TRUE, dirlistonly=TRUE)\n  files <- unlist(strsplit(files, \"\\r\\n\"))\n  \n  # is the SQLite version found?\n  f <- grep(\"^HYDAT_sqlite\", files, ignore.case=TRUE)\n  if(f > 0) {\n    print(sprintf(\"Latest version: %s\", f[1]))\n    \n  }\n} \n\n#' Version\n#' @description Determines the version and publish date of HYDAT database\n#' @param con an open SQLite database connection\n#' @return A data frame containing the creation date and version number of the HYDAT database\n#' @export\nVersion <- function(con){\n  sqlString <- \"SELECT * FROM VERSION\"\n  version <- dbGetQuery(con, sqlString)  \n  return(version[1,])\n}\n",
+    "created" : 1446579935123.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3393737056",
+    "id" : "65AA6C11",
+    "lastKnownWriteTime" : 1447819238,
+    "path" : "~/R_LIBRARY/HYDAT/R/Version.r",
+    "project_path" : "R/Version.r",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
