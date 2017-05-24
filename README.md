@@ -29,7 +29,7 @@ The commands are:
 
 ### Downloading data
 **HYDAT** uses SQLite databases of hydrological data from Environment Canada. You can get the most recent database from https://ec.gc.ca/rhc-wsc/default.asp?lang=En&n=9018B5EC-1.
-Be sure to download the file named "Hydat_sqlite3_YYYYMMDD.zip" where YYYMMDD is the date of the file.
+Be sure to download the file named "Hydat_sqlite3_YYYYMMDD.zip" where YYYMMDD is the date of the file. Once the file is downloaded, extract the SQLite database file Hydat.sqlite3.
 
 ### Using the HYDAT R commands
 Getting **HYDAT** data in R takes 3 steps:
@@ -37,15 +37,15 @@ Getting **HYDAT** data in R takes 3 steps:
 2. Retrieving the data
 3. Closing the connection.
 
-Steps 1 and 2 require commands from the **RSQLite** package; step 3 requires a **HYDAT** command. This example extracts daily flow values for a given station.
+Steps 1 and 3 require commands from the **RSQLite** package; step 2 requires a **HYDAT** command. This example extracts daily flow values for a given station.
 
-	HYDATfile <- 'Hydat_sqlite3_20170418.zip'
+	HYDATfile <- 'Hydat.sqlite3'
 	WSCstation <- '05HG001'  # South Sask. River at Saskatoon
 	HYDAT <- dbConnect(SQLite(), HYDATfile)
 	
 	dailyvals <- DailyHydrometricData(con = HYDAT, 
-				get_flow = TRUE, 
-				station_number = WSCstation)
+	               get_flow = TRUE, 
+	               station_number = WSCstation)
 	
 	dbDisconnect(HYDAT)
   
