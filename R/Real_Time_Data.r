@@ -54,27 +54,26 @@ RealTimeData <- function(base_url = "http://dd.weather.gc.ca/hydrometric", prov_
   # nicely from the data mart files
   colHeaders <- c("station_number", "date_time", "hg", "hg_grade", "hg_sym", "hg_code",
                   "qr", "qr_grade", "qr_sym", "qr_code")
-
+  
   # get hourly file
   h <- try(read.table(infile[1], header=TRUE, sep=",", stringsAsFactors=FALSE))
- 
+  
   if(class(h)=="try-error") {
     stop(sprintf("Station [%s] cannot be found within Province/Territory [%s]...url not located %s",
                  station_number, prov_terr_loc, infile[1]))
   }
   colnames(h) <- colHeaders
   h$date_time <- gsub("([+-]\\d\\d)(:)","\\1", h$date_time)
-  h$date_time <- strptime(h$date_time, "%FT%T%z", tz="UTC")
+  h$date_time <- as.POSIXct(strptime(h$date_time, "%FT%T%z", tz="UTC"))
   
   # get daily file
   d <- try(read.table(infile[2], header=TRUE, sep=",", stringsAsFactors=FALSE))
   colnames(d) <- colHeaders
   d$date_time <- gsub("([+-]\\d\\d)(:)","\\1", d$date_time)
-  d$date_time <- strptime(d$date_time, "%FT%T%z", tz="UTC")
+  d$date_time <- as.POSIXct(strptime(d$date_time, "%FT%T%z", tz="UTC"))
   
   # now merge the hourly + daily (hourly data overwrites daily where dates are the same)
   p <- which(d$date_time < min(h$date_time))
   output <- rbind(d[p,], h)
   return(output)
 }
-
