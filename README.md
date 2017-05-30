@@ -39,6 +39,8 @@ Getting **HYDAT** data in R takes 3 steps:
 
 Steps 1 and 3 require commands from the **RSQLite** package; step 2 requires a **HYDAT** command. This example extracts daily flow values for a given station.
 
+	library(RSQLite)
+	library(HYDAT)
 	HYDATfile <- 'Hydat.sqlite3'
 	WSCstation <- '05HG001'  # South Sask. River at Saskatoon
 	HYDAT <- dbConnect(SQLite(), HYDATfile)
